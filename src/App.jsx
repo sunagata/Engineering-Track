@@ -2,10 +2,14 @@ import { useEffect, useState } from 'react'
 import { supabase, isSupabaseConfigured } from './lib/supabaseClient'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
+import HistoryPage from './components/HistoryPage'
+import AnalyticsPage from './components/AnalyticsPage'
+import Navigation from './components/Navigation'
 
 export default function App() {
   const [session, setSession] = useState(null)
   const [checking, setChecking] = useState(true)
+  const [activePage, setActivePage] = useState('today')
 
   useEffect(() => {
     if (!isSupabaseConfigured) {
@@ -31,7 +35,7 @@ export default function App() {
             Buat file <code className="font-mono bg-surface-soft px-1.5 py-0.5 rounded">.env</code> berdasarkan{' '}
             <code className="font-mono bg-surface-soft px-1.5 py-0.5 rounded">.env.example</code>, isi
             VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY dari project Supabase kamu, lalu restart{' '}
-            <code className="font-mono bg-surface-soft px-1.5 py-0.5 rounded">npm run dev</code>. Detail lengkap ada di README.
+            <code className="font-mono bg-surface-soft px-1.5 py-0.5 rounded">npm run dev</code>.
           </p>
         </div>
       </div>
@@ -39,8 +43,21 @@ export default function App() {
   }
 
   if (checking) {
-    return <div className="min-h-screen flex items-center justify-center text-ink-soft text-sm">Memuat...</div>
+    return (
+      <div className="min-h-screen flex items-center justify-center text-ink-soft text-sm">
+        Memuat...
+      </div>
+    )
   }
 
-  return session ? <Dashboard session={session} /> : <Login />
+  if (!session) return <Login />
+
+  return (
+    <div className="min-h-screen bg-paper">
+      {activePage === 'today' && <Dashboard session={session} />}
+      {activePage === 'history' && <HistoryPage session={session} />}
+      {activePage === 'analytics' && <AnalyticsPage session={session} />}
+      <Navigation active={activePage} onChange={setActivePage} />
+    </div>
+  )
 }

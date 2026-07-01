@@ -99,7 +99,7 @@ export default function Dashboard({ session }) {
   if (loading) return <div className="min-h-screen flex items-center justify-center text-ink-soft text-sm">Memuat data...</div>
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
+    <div className="max-w-3xl mx-auto px-4 py-8 pb-28">
       <header className="flex items-start justify-between gap-4 mb-8">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-lg bg-primary-soft flex items-center justify-center shrink-0">
